@@ -5,6 +5,7 @@
 #include "ShotFall.h"
 #include "SceneTitle.h"
 #include <cassert>
+#include "ShotNormal.h"
 
 
 namespace
@@ -133,6 +134,16 @@ void SceneMain::draw()
 
 	//Œ»Ý‘¶Ý‚µ‚Ä‚¢‚é’e‚Ì”‚ð•\Ž¦
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "’e‚Ì”:%d", m_pShotVt.size());
+}
+
+bool SceneMain::createShotPlayer(Vec2 pos)
+{
+	ShotPlayer* pShot = new ShotPlayer;
+	pShot->setHandle(m_hShotGraphic);
+	pShot->start(pos);
+	m_pShotVt.push_back(pShot);
+
+	return true;
 }
 
 bool SceneMain::createShotNormal(Vec2 pos)

@@ -2,13 +2,13 @@
 
 #include "ShotBase.h"
 
-class ShotPlayer : public ShotBase
+class ShotNormal : public ShotBase
 {
 public:
-	ShotPlayer()
+	ShotNormal()
 	{
 	}
-	virtual ~ShotPlayer()
+	virtual ~ShotNormal()
 	{
 	}
 

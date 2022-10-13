@@ -17,7 +17,7 @@ public:
 	// ï\é¶
 	void draw();
 
-	//ë∂ç›ÇÈÇ∑ÇÈÇ©
+	//ë∂ç›Ç∑ÇÈÇ©
 	bool isExist() const { return m_isExist; }
 
 private:

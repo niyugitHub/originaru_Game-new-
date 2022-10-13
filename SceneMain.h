@@ -24,6 +24,7 @@ public:
 	virtual void draw();
 
 	//íeÇÃê∂ê¨
+	virtual bool createShotPlayer(Vec2 pos);
 	virtual bool createShotNormal(Vec2 pos);
 	virtual bool createShotFall(Vec2 pos);
 	virtual bool createShotBound(Vec2 pos);
