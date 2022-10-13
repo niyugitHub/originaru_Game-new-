@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "SceneMain.h"
 #include "ShotBound.h"
-#include "ShotNormal.h"
+#include "ShotPlayer.h"
 #include "ShotFall.h"
 #include "SceneTitle.h"
 #include <cassert>

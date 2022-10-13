@@ -163,7 +163,7 @@
     <ClInclude Include="ShotBase.h" />
     <ClInclude Include="ShotBound.h" />
     <ClInclude Include="ShotFall.h" />
-    <ClInclude Include="ShotNormal.h" />
+    <ClInclude Include="ShotPlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="enemy.cpp" />
@@ -177,7 +177,7 @@
     <ClCompile Include="ShotBase.cpp" />
     <ClCompile Include="ShotBound.cpp" />
     <ClCompile Include="ShotFall.cpp" />
-    <ClCompile Include="ShotNormal.cpp" />
+    <ClCompile Include="ShotPlayer.cpp" />
     <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

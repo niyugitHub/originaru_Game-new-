@@ -43,4 +43,5 @@ private:
 	Vec2 m_vec;
 
 	int m_shotInterval;
+	int m_waitFrame;
 };

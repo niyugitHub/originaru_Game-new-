@@ -36,6 +36,7 @@ void Enemy::init()
 	m_vec.x = kSpeed;
 	m_vec.y = kSpeed;
 	m_shotInterval = 0;
+	m_waitFrame = kMoveTime;
 }
 
 void Enemy::update()
@@ -75,14 +76,35 @@ void Enemy::update()
 		}
 	}
 
+	if (m_waitFrame > 0)
+	{
+		m_waitFrame--;
+		return;
+	}
+	
+
+	if (m_pos.x < 0)
+	{
+		m_vec.x *= -1;
+		m_waitFrame = kMoveTime;
+	}
+	if (m_pos.x > Game::kScreenWidth - kEnemyGraphicSizeX)
+	{
+		m_vec.x *= -1;
+		m_waitFrame = kMoveTime;
+	}
+
 	if (randMove > 50)
 	{
 
-		if (m_pos.x < 0) m_vec.x * -1;
-		if (m_pos.x > (Game::kScreenWidth)-(kEnemyGraphicSizeX)) m_vec.x * -1;
 	}
-		m_pos.x += m_vec.x;
 
+	else if (randMove > 20)
+	{
+
+	}
+
+	m_pos.x += m_vec.x;
 }
 
 void Enemy::draw()
