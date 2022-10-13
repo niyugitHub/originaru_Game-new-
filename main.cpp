@@ -2,7 +2,7 @@
 
 #include "game.h"
 #include "SceneMain.h"
-
+#include "SceneManager.h"
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// ダブルバッファモード
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	SceneMain scene;
+	SceneManager scene;
 
 	// 画像のロード
 	scene.init();

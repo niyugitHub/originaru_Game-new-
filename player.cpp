@@ -12,7 +12,7 @@ namespace
 	// X方向、Y方向の速度
 	constexpr float kSpeed = 4;
 	//ショットの発射間隔
-	constexpr float kShotInterval = 16;
+	constexpr float kShotInterval = 16.0f;
 }
 
 Player::Player()
@@ -37,7 +37,7 @@ Player::~Player()
 void Player::init()
 {
 	m_pos.x = Game::kScreenWidth / 2 - kPlayerGraphicSizeX / 2;
-	m_pos.y = Game::kScreenHeight / 2 - kPlayerGraphicSizeY / 2;
+	m_pos.y = Game::kScreenHeight - kPlayerGraphicSizeY - 100;
 	m_vec.x = kSpeed;
 	m_vec.y = kSpeed;
 	m_shotInterval = 0;
@@ -80,22 +80,28 @@ void Player::update()
 		}
 	}
 
+
 	if (padState & PAD_INPUT_UP)
 	{
 		m_pos.y -= m_vec.y;
+		if (m_pos.y < 0) m_pos.y = 0;
 	}
 	if (padState & PAD_INPUT_DOWN)
 	{
 		m_pos.y += m_vec.y;
+		if (m_pos.y > (Game::kScreenHeight)-(kPlayerGraphicSizeY)) m_pos.y = (Game::kScreenHeight)-(kPlayerGraphicSizeY);
 	}
 	if (padState & PAD_INPUT_LEFT)
 	{
 		m_pos.x -= m_vec.x;
+		if (m_pos.x < 0) m_pos.x = 0;
 	}
 	if (padState & PAD_INPUT_RIGHT)
 	{
 		m_pos.x += m_vec.x;
+		if (m_pos.x > (Game::kScreenWidth)-(kPlayerGraphicSizeX)) m_pos.x = (Game::kScreenWidth)-(kPlayerGraphicSizeX);
 	}
+
 
 	m_animeFrame++;
 	if (m_animeFrame >= kPlayerGraphicDivX * kAnimeChangeFrame)

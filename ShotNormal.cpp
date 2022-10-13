@@ -3,15 +3,15 @@
 
 namespace
 {
-	constexpr float kShotSpeed = 8.0f;
+	constexpr float kShotSpeed = 50.0f;
 }
 
 void ShotNormal::start(Vec2 pos)
 {
 	ShotBase::start(pos);
 
-	m_vec.x = kShotSpeed;
-	m_vec.y = 0.0f;
+	m_vec.x = 0;
+	m_vec.y = -kShotSpeed;
 }
 
 void ShotNormal::update()
@@ -19,7 +19,7 @@ void ShotNormal::update()
 	if (!m_isExist)return;
 	m_pos += m_vec;
 
-	if (m_pos.x > Game::kScreenWidth)
+	if (m_pos.y < 0)
 	{
 		m_isExist = false;
 	}

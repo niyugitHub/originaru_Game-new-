@@ -3,38 +3,44 @@
 #include <vector>
 #include "player.h"
 #include "ShotBase.h"
+#include "SceneBase.h"
+#include "enemy.h"
 
-class SceneMain
+class SceneMain : public SceneBase
 {
 public:
 	SceneMain();
 	virtual ~SceneMain();
 
 	// 初期化
-	void init();
+	virtual void init();
+
 	// 終了処理
-	void end();
+	virtual void end();
 
 	// 毎フレームの処理
-	void update();
+	virtual SceneBase* update();
 	// 毎フレームの描画
-	void draw();
+	virtual void draw();
 
 	//弾の生成
-	bool createShotNormal(Vec2 pos);
-	bool createShotFall(Vec2 pos);
-	bool createShotBound(Vec2 pos);
+	virtual bool createShotNormal(Vec2 pos);
+	virtual bool createShotFall(Vec2 pos);
+	virtual bool createShotBound(Vec2 pos);
 
 private:
 
 	// プレイヤーのグラフィックハンドル
 	int m_hPlayerGraphic[Player::kPlayerGraphicDivNum];
+	int m_hEnemyGraphic;
 	int m_hShotGraphic;
 
 	// サウンドハンドル
 	 int m_hTestSound;
 	// プレイヤー
 	Player m_player;
+	// 敵
+	Enemy m_enemy;
 	// ショット
 	//ShotBase* m_pShot[kShotMax];
 	std::vector<ShotBase*> m_pShotVt;

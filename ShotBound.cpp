@@ -68,12 +68,12 @@ void ShotBound::update()
 		{
 			m_isExist = false;
 		}
-		if (m_pos.x < (0 - kSizeY))
+		if (m_pos.y < (0 - kSizeY))
 		{
 			m_isExist = false;
 		}
 
-		if (m_pos.y > Game::kScreenHeight)
+		if (m_pos.x > Game::kScreenWidth)
 		{
 			m_isExist = false;
 		}

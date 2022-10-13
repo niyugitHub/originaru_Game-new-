@@ -3,7 +3,9 @@
 #include "ShotBound.h"
 #include "ShotNormal.h"
 #include "ShotFall.h"
+#include "SceneTitle.h"
 #include <cassert>
+
 
 namespace
 {
@@ -11,6 +13,7 @@ namespace
 	constexpr int kShotInterval = 16;
 	// グラフィックファイル名
 	const char* const kPlayerGraphicFilename = "data/player.png";
+	const char* const kEnemyGraphicFilename = "data/enemy.bmp";
 }
 
 SceneMain::SceneMain()
@@ -20,6 +23,7 @@ SceneMain::SceneMain()
 	{
 		handle = -1;
 	}
+	m_hEnemyGraphic = -1;
 	m_hShotGraphic = -1;
 }
 SceneMain::~SceneMain()
@@ -34,6 +38,7 @@ void SceneMain::init()
 	LoadDivGraph(kPlayerGraphicFilename, Player::kPlayerGraphicDivNum,
 		Player::kPlayerGraphicDivX, Player::kPlayerGraphicDivY,
 		Player::kPlayerGraphicSizeX, Player::kPlayerGraphicSizeY, m_hPlayerGraphic);
+	m_hEnemyGraphic = LoadGraph(kEnemyGraphicFilename);
 	m_hShotGraphic = LoadGraph("data/shot.bmp");
 	// サウンドのロード
 	m_hTestSound = LoadSoundMem("sound/cursor0.mp3");
@@ -44,6 +49,9 @@ void SceneMain::init()
 	}
 	m_player.init();
 	m_player.setMain(this);
+	m_enemy.setHandle(m_hEnemyGraphic);
+	m_enemy.init();
+	m_enemy.setMain(this);
 }
 
 // 終了処理
@@ -54,6 +62,7 @@ void SceneMain::end()
 	{
 		DeleteGraph(handle);
 	}
+	DeleteGraph(m_hEnemyGraphic);
 	DeleteGraph(m_hShotGraphic);
 	// サウンドアンロード
 	DeleteSoundMem(m_hTestSound);
@@ -67,7 +76,7 @@ void SceneMain::end()
 }
 
 // 毎フレームの処理
-void SceneMain::update()
+SceneBase* SceneMain::update()
 {
 	int padState = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	if (padState & PAD_INPUT_1)
@@ -75,7 +84,7 @@ void SceneMain::update()
 		PlaySoundMem(m_hTestSound, DX_PLAYTYPE_BACK, true);
 	}
 	m_player.update();
-
+	m_enemy.update();
 	std::vector<ShotBase*>::iterator it = m_pShotVt.begin();
 	while (it != m_pShotVt.end())
 	{
@@ -93,6 +102,7 @@ void SceneMain::update()
 		}
 		it++;
 	}
+	return this;
 #if false
 	for (auto& pShot : m_pShotVt)
 	{
@@ -114,7 +124,7 @@ void SceneMain::update()
 void SceneMain::draw()
 {
 	m_player.draw();
-
+	m_enemy.draw();
 	for (auto& pShot : m_pShotVt)
 	{
 		assert(pShot);
