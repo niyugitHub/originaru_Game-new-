@@ -15,6 +15,13 @@ namespace
 	// グラフィックファイル名
 	const char* const kPlayerGraphicFilename = "data/player.png";
 	const char* const kEnemyGraphicFilename = "data/enemy.bmp";
+
+	// プレイヤーのサイズ
+	constexpr int kPlayerGraphicSizeX = Player::kPlayerGraphicSizeX;
+	constexpr int kPlayerGraphicSizeY = Player::kPlayerGraphicSizeY;
+	// 敵のサイズ
+	constexpr int kEnemyGraphicSizeX = Enemy::kEnemyGraphicSizeX;
+	constexpr int kEnemyGraphicSizeY = Enemy::kEnemyGraphicSizeY;
 }
 
 SceneMain::SceneMain()
@@ -79,6 +86,10 @@ void SceneMain::end()
 // 毎フレームの処理
 SceneBase* SceneMain::update()
 {
+	if (Collision_Detection())
+	{
+		DxLib_End();
+	}
 	int padState = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	if (padState & PAD_INPUT_1)
 	{
@@ -172,6 +183,29 @@ bool SceneMain::createShotBound(Vec2 pos)
 	pShot->setHandle(m_hShotGraphic);
 	pShot->start(pos);
 	m_pShotVt.push_back(pShot);
+
+	return true;
+}
+
+bool SceneMain::Collision_Detection()
+{
+	m_player.getPos();
+	m_enemy.getPos();
+
+	float playerLeft = m_player.getPos().x;
+	float playerRight = m_player.getPos().x + kPlayerGraphicSizeX;
+	float playerTop = m_player.getPos().y;
+	float playerBottom = m_player.getPos().y + kPlayerGraphicSizeY;
+
+	float enemyLeft = m_enemy.getPos().x;
+	float enemyRight = m_enemy.getPos().x + kEnemyGraphicSizeX;
+	float enemyTop = m_enemy.getPos().y;
+	float enemyBottom = m_enemy.getPos().y + kEnemyGraphicSizeY;
+
+	if (playerLeft > enemyRight)	return false;
+	if (playerRight < enemyLeft)	return false;
+	if (playerTop > enemyBottom)	return false;
+	if (playerBottom < enemyTop)	return false;
 
 	return true;
 }

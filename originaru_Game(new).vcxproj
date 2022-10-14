@@ -151,7 +151,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\shot00\Vec2.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="player.h" />
@@ -165,6 +164,7 @@
     <ClInclude Include="ShotFall.h" />
     <ClInclude Include="ShotNormal.h" />
     <ClInclude Include="ShotPlayer.h" />
+    <ClInclude Include="Vec2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="enemy.cpp" />

@@ -34,6 +34,9 @@ public:
 private:
 	int m_handle;
 
+	// グラフィックの幅と高さ
+	Vec2 m_graphSize;
+
 	//SceneMainのポインタ
 	SceneMain* m_pMain;
 

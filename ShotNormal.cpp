@@ -19,7 +19,7 @@ void ShotNormal::update()
 	if (!m_isExist)return;
 	m_pos += m_vec;
 
-	if (m_pos.y < 0)
+	if (m_pos.y > Game::kScreenHeight)
 	{
 		m_isExist = false;
 	}
