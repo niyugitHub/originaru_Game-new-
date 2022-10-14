@@ -12,7 +12,7 @@ namespace
 	// X方向、Y方向の速度
 	constexpr float kSpeed = 4;
 	//ショットの発射間隔
-	constexpr float kShotInterval = 8.0f;
+	constexpr float kShotInterval =8.0f;
 	//動く間隔
 	constexpr int kMoveTime = 180;
 }

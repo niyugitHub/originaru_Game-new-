@@ -17,6 +17,9 @@ public:
 	// •\¦
 	virtual void draw();
 
+	// î•ñ‚Ìæ“¾
+	Vec2 getPos() const { return m_pos; }
+
 	//‘¶İ‚·‚é‚©
 	bool isExist() const { return m_isExist; }
 

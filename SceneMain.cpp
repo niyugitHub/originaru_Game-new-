@@ -22,6 +22,9 @@ namespace
 	// 敵のサイズ
 	constexpr int kEnemyGraphicSizeX = Enemy::kEnemyGraphicSizeX;
 	constexpr int kEnemyGraphicSizeY = Enemy::kEnemyGraphicSizeY;
+	// ショットのサイズ
+	constexpr int kShotGraphicSizeX = 16.0f;
+	constexpr int kShotGraphicSizeY = 16.0f;
 }
 
 SceneMain::SceneMain()
@@ -192,20 +195,90 @@ bool SceneMain::Collision_Detection()
 	m_player.getPos();
 	m_enemy.getPos();
 
-	float playerLeft = m_player.getPos().x;
-	float playerRight = m_player.getPos().x + kPlayerGraphicSizeX;
-	float playerTop = m_player.getPos().y;
-	float playerBottom = m_player.getPos().y + kPlayerGraphicSizeY;
+	std::vector<ShotBase*>::iterator it = m_pShotVt.begin();
+	while (it != m_pShotVt.end())
+	{
+		auto& pShot = (*it);
+		assert(pShot);
+		pShot->getPos();
 
-	float enemyLeft = m_enemy.getPos().x;
-	float enemyRight = m_enemy.getPos().x + kEnemyGraphicSizeX;
-	float enemyTop = m_enemy.getPos().y;
-	float enemyBottom = m_enemy.getPos().y + kEnemyGraphicSizeY;
+		float shotLeft = pShot->getPos().x;
+		float shotRight = pShot->getPos().x + kShotGraphicSizeX;
+		float shotTop = pShot->getPos().y;
+		float shotBottom = pShot->getPos().y + kShotGraphicSizeY;
 
-	if (playerLeft > enemyRight)	return false;
-	if (playerRight < enemyLeft)	return false;
-	if (playerTop > enemyBottom)	return false;
-	if (playerBottom < enemyTop)	return false;
+		float playerLeft = m_player.getPos().x + 10;
+		float playerRight = m_player.getPos().x + kPlayerGraphicSizeX - 10;
+		float playerTop = m_player.getPos().y + 10;
+		float playerBottom = m_player.getPos().y + kPlayerGraphicSizeY - 10;
 
-	return true;
+		if (playerLeft > shotRight)
+		{
+			it++;
+			continue;
+		}
+		if (playerRight < shotLeft)
+		{
+			it++;
+			continue;
+		}
+		if (playerTop > shotBottom)
+		{
+			it++;
+			continue;
+		}
+		if (playerBottom < shotTop)
+		{
+			it++;
+			continue;
+		}
+		return true;
+	}
+	return false;
+	
+	 
+	//	float playerLeft = m_player.getPos().x;
+	//	float playerRight = m_player.getPos().x + kPlayerGraphicSizeX;
+	//	float playerTop = m_player.getPos().y;
+	//	float playerBottom = m_player.getPos().y + kPlayerGraphicSizeY;
+
+	//	float enemyLeft = m_enemy.getPos().x;
+	//	float enemyRight = m_enemy.getPos().x + kEnemyGraphicSizeX;
+	//	float enemyTop = m_enemy.getPos().y;
+	//	float enemyBottom = m_enemy.getPos().y + kEnemyGraphicSizeY;
+
+	//	if (playerLeft > enemyRight) return false;
+	//	if (playerRight < enemyLeft) return false;
+	//	if (playerTop > enemyBottom) return false;
+	//	if (playerBottom < enemyTop) return false;
+
+	//	/*if (playerLeft > pShot->getPos().x + kShotGraphicSizeX) return false;
+	//	if (playerRight < pShot->getPos().x) return false;
+	//	if (playerTop > pShot->getPos().y + kShotGraphicSizeY) return false;
+	//	if (playerBottom < pShot->getPos().y) return false;*/
+
+	//	return true;
+	//}
+	
+	
+
+
+
+
+	/*float enemyLeft = m_enemy.getPos().x + 10;
+	float enemyRight = m_enemy.getPos().x + kEnemyGraphicSizeX - 10;
+	float enemyTop = m_enemy.getPos().y + 10;
+	float enemyBottom = m_enemy.getPos().y + kEnemyGraphicSizeY - 10;
+
+	if (playerLeft > enemyRight) return false;
+	if (playerRight < enemyLeft) return false;
+	if (playerTop > enemyBottom) return false;
+	if (playerBottom < enemyTop) return false;
+
+	if (playerLeft > shotLeft) return false;
+	if (playerRight < shotRight) return false;a
+	if (playerTop > shotTop) return false;
+	if (playerBottom < shotBottom) return false;*/
+	
+	//return true;
 }

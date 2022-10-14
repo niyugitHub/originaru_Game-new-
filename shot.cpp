@@ -16,6 +16,8 @@ Shot::Shot()
 	m_vec.x = 0.0f;
 	m_vec.y = 0.0f;
 
+	m_shotInterval = 8;
+
 	m_isExist = false;
 }
 
