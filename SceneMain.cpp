@@ -8,6 +8,7 @@
 #include "ShotNormal.h"
 #include "game.h"
 
+// ÇÜÇ∂Ç•ÇÌÇ®Ç¢ÇÜÇ∂Ç·ÇóÅGÇ®ÇÜÇ∂Ç•Ç¢ÅG
 
 namespace
 {
