@@ -89,7 +89,11 @@ void SceneMain::end()
 // –ˆƒtƒŒ[ƒ€‚Ìˆ—
 SceneBase* SceneMain::update()
 {
-	if (Collision_Detection())
+	if (Col_Shot())
+	{
+		DxLib_End();
+	}
+	if (Col_Enemy())
 	{
 		DxLib_End();
 	}
@@ -190,10 +194,9 @@ bool SceneMain::createShotBound(Vec2 pos)
 	return true;
 }
 
-bool SceneMain::Collision_Detection()
+bool SceneMain::Col_Shot()
 {
 	m_player.getPos();
-	m_enemy.getPos();
 
 	std::vector<ShotBase*>::iterator it = m_pShotVt.begin();
 	while (it != m_pShotVt.end())
@@ -281,4 +284,27 @@ bool SceneMain::Collision_Detection()
 	if (playerBottom < shotBottom) return false;*/
 	
 	//return true;
+}
+
+bool SceneMain::Col_Enemy()
+{
+	m_player.getPos();
+	m_enemy.getPos();
+
+	float playerLeft = m_player.getPos().x + 10;
+	float playerRight = m_player.getPos().x + kPlayerGraphicSizeX - 10;
+	float playerTop = m_player.getPos().y + 10;
+	float playerBottom = m_player.getPos().y + kPlayerGraphicSizeY - 10;
+
+	float enemyLeft = m_enemy.getPos().x + 10;
+	float enemyRight = m_enemy.getPos().x + kEnemyGraphicSizeX - 10;
+	float enemyTop = m_enemy.getPos().y + 10;
+	float enemyBottom = m_enemy.getPos().y + kEnemyGraphicSizeY - 10;
+
+	if (playerLeft > enemyRight) return false;
+	if (playerRight < enemyLeft) return false;
+	if (playerTop > enemyBottom) return false;
+	if (playerBottom < enemyTop) return false;
+
+	return true;
 }

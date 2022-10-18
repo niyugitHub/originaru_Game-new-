@@ -31,6 +31,11 @@ public:
 	// î•ñ‚Ìæ“¾
 	Vec2 getPos() const { return m_pos; }
 
+	// “®‚«‚Ìæ“¾
+	void MoveNormal();
+	void MoveCircle();
+//	void Move();
+
 private:
 	int m_handle;
 
@@ -47,4 +52,9 @@ private:
 
 	int m_shotInterval;
 	int m_waitFrame;
+	int m_randMove;
+	int m_Center;
+	float m_rotAngle1;
+	float m_rotAngle2;
+	float m_PI;
 };

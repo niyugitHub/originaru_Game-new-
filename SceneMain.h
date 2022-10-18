@@ -30,7 +30,8 @@ public:
 	virtual bool createShotBound(Vec2 pos);
 
 	// 当たり判定
-	virtual bool Collision_Detection();
+	virtual bool Col_Shot();
+	virtual bool Col_Enemy();
 private:
 
 	// プレイヤーのグラフィックハンドル
