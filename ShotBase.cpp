@@ -3,7 +3,8 @@
 
 namespace
 {
-		
+	constexpr int kEnemyGraphicSizeX = 64;
+	constexpr int kEnemyGraphicSizeY = 80;
 }
 
 ShotBase::ShotBase()
@@ -26,7 +27,8 @@ ShotBase::~ShotBase()
 void ShotBase::start(Vec2 pos)
 {
 	m_isExist = true;
-	m_pos = pos;
+	m_pos.x = pos.x + kEnemyGraphicSizeX / 2;
+	m_pos.y = pos.y + kEnemyGraphicSizeY;
 }
 
 void ShotBase::update()

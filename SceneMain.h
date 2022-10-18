@@ -30,8 +30,9 @@ public:
 	virtual bool createShotBound(Vec2 pos);
 
 	// 当たり判定
-	virtual bool Col_Shot();
-	virtual bool Col_Enemy();
+	virtual bool Col_ShotPlayer();
+	virtual bool Col_EnemyPlayer();
+	virtual bool Col_ShotEnemy();
 private:
 
 	// プレイヤーのグラフィックハンドル
@@ -41,6 +42,8 @@ private:
 
 	// サウンドハンドル
 	 int m_hTestSound;
+	 // 敵体力
+	 int m_EnemyHP;
 	// プレイヤー
 	Player m_player;
 	// 敵

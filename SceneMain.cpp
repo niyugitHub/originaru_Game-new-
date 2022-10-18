@@ -6,6 +6,7 @@
 #include "SceneTitle.h"
 #include <cassert>
 #include "ShotNormal.h"
+#include "game.h"
 
 
 namespace
@@ -63,6 +64,7 @@ void SceneMain::init()
 	m_enemy.setHandle(m_hEnemyGraphic);
 	m_enemy.init();
 	m_enemy.setMain(this);
+	m_EnemyHP = 20;
 }
 
 // I—¹ˆ—
@@ -89,13 +91,22 @@ void SceneMain::end()
 // –ˆƒtƒŒ[ƒ€‚Ìˆ—
 SceneBase* SceneMain::update()
 {
-	if (Col_Shot())
+	if (Col_ShotPlayer())
 	{
 		DxLib_End();
 	}
-	if (Col_Enemy())
+	if (Col_EnemyPlayer())
 	{
 		DxLib_End();
+	}
+	if (Col_ShotEnemy())
+	{
+		m_EnemyHP--;
+		if (m_EnemyHP == 0)
+		{
+			DxLib_End();
+		}
+
 	}
 	int padState = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	if (padState & PAD_INPUT_1)
@@ -152,6 +163,7 @@ void SceneMain::draw()
 
 	//Œ»Ý‘¶Ý‚µ‚Ä‚¢‚é’e‚Ì”‚ð•\Ž¦
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "’e‚Ì”:%d", m_pShotVt.size());
+	DrawBox(0, 0, m_EnemyHP * (Game::kScreenWidth / 20), 100,GetColor(0,255,0),true);
 }
 
 bool SceneMain::createShotPlayer(Vec2 pos)
@@ -194,7 +206,7 @@ bool SceneMain::createShotBound(Vec2 pos)
 	return true;
 }
 
-bool SceneMain::Col_Shot()
+bool SceneMain::Col_ShotPlayer()
 {
 	m_player.getPos();
 
@@ -239,54 +251,9 @@ bool SceneMain::Col_Shot()
 	}
 	return false;
 	
-	 
-	//	float playerLeft = m_player.getPos().x;
-	//	float playerRight = m_player.getPos().x + kPlayerGraphicSizeX;
-	//	float playerTop = m_player.getPos().y;
-	//	float playerBottom = m_player.getPos().y + kPlayerGraphicSizeY;
-
-	//	float enemyLeft = m_enemy.getPos().x;
-	//	float enemyRight = m_enemy.getPos().x + kEnemyGraphicSizeX;
-	//	float enemyTop = m_enemy.getPos().y;
-	//	float enemyBottom = m_enemy.getPos().y + kEnemyGraphicSizeY;
-
-	//	if (playerLeft > enemyRight) return false;
-	//	if (playerRight < enemyLeft) return false;
-	//	if (playerTop > enemyBottom) return false;
-	//	if (playerBottom < enemyTop) return false;
-
-	//	/*if (playerLeft > pShot->getPos().x + kShotGraphicSizeX) return false;
-	//	if (playerRight < pShot->getPos().x) return false;
-	//	if (playerTop > pShot->getPos().y + kShotGraphicSizeY) return false;
-	//	if (playerBottom < pShot->getPos().y) return false;*/
-
-	//	return true;
-	//}
-	
-	
-
-
-
-
-	/*float enemyLeft = m_enemy.getPos().x + 10;
-	float enemyRight = m_enemy.getPos().x + kEnemyGraphicSizeX - 10;
-	float enemyTop = m_enemy.getPos().y + 10;
-	float enemyBottom = m_enemy.getPos().y + kEnemyGraphicSizeY - 10;
-
-	if (playerLeft > enemyRight) return false;
-	if (playerRight < enemyLeft) return false;
-	if (playerTop > enemyBottom) return false;
-	if (playerBottom < enemyTop) return false;
-
-	if (playerLeft > shotLeft) return false;
-	if (playerRight < shotRight) return false;a
-	if (playerTop > shotTop) return false;
-	if (playerBottom < shotBottom) return false;*/
-	
-	//return true;
 }
 
-bool SceneMain::Col_Enemy()
+bool SceneMain::Col_EnemyPlayer()
 {
 	m_player.getPos();
 	m_enemy.getPos();
@@ -307,4 +274,50 @@ bool SceneMain::Col_Enemy()
 	if (playerBottom < enemyTop) return false;
 
 	return true;
+}
+
+bool SceneMain::Col_ShotEnemy()
+{
+	m_enemy.getPos();
+
+	std::vector<ShotBase*>::iterator it = m_pShotVt.begin();
+	while (it != m_pShotVt.end())
+	{
+		auto& pShot = (*it);
+		assert(pShot);
+		pShot->getPos();
+
+		float shotLeft = pShot->getPos().x;
+		float shotRight = pShot->getPos().x + kShotGraphicSizeX;
+		float shotTop = pShot->getPos().y;
+		float shotBottom = pShot->getPos().y + kShotGraphicSizeY;
+
+		float enemyLeft = m_enemy.getPos().x + 10;
+		float enemyRight = m_enemy.getPos().x + kEnemyGraphicSizeX - 10;
+		float enemyTop = m_enemy.getPos().y + 10;
+		float enemyBottom = m_enemy.getPos().y + kEnemyGraphicSizeY - 10;
+
+		if (enemyLeft > shotRight)
+		{
+			it++;
+			continue;
+		}
+		if (enemyRight < shotLeft)
+		{
+			it++;
+			continue;
+		}
+		if (enemyTop > shotBottom)
+		{
+			it++;
+			continue;
+		}
+		if (enemyBottom < shotTop)
+		{
+			it++;
+			continue;
+		}
+		return true;
+	}
+	return false;
 }

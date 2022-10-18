@@ -4,11 +4,17 @@
 namespace
 {
 	constexpr float kShotSpeed = 50.0f;
+	constexpr int kPlayerGraphicSizeX = 32;
+	constexpr int kPlayerGraphicSizeY = 32;
 }
 
 void ShotPlayer::start(Vec2 pos)
 {
-	ShotBase::start(pos);
+//	ShotBase::start(pos);
+
+	m_isExist = true;
+	m_pos.x = pos.x + 8;
+	m_pos.y = pos.y + kPlayerGraphicSizeY - 10;
 
 	m_vec.x = 0;
 	m_vec.y = -kShotSpeed;
