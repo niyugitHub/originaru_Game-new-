@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ShotBase.h"
+#include "Player.h"
 
 class ShotNormal : public ShotBase
 {
@@ -16,4 +17,6 @@ public:
 	virtual void start(Vec2 pos);
 	// çXêV
 	virtual void update();
+private:
+	Player m_player;
 };

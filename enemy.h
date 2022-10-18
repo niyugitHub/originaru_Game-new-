@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vec2.h"
+#include "Player.h"
 
 class SceneMain;
 
@@ -49,6 +50,8 @@ private:
 	Vec2 m_pos;
 	// ˆÚ“®
 	Vec2 m_vec;
+
+	Player m_player;
 
 	int m_shotInterval;
 	int m_waitFrame;

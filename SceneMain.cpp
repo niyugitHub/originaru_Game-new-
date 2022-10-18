@@ -164,7 +164,7 @@ void SceneMain::draw()
 
 	//Œ»İ‘¶İ‚µ‚Ä‚¢‚é’e‚Ì”‚ğ•\¦
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "’e‚Ì”:%d", m_pShotVt.size());
-	DrawBox(0, 0, m_EnemyHP * (Game::kScreenWidth / 20), 100,GetColor(0,255,0),true);
+//	DrawBox(0, 0, m_EnemyHP * (Game::kScreenWidth / 20), 100,GetColor(0,255,0),true);
 }
 
 bool SceneMain::createShotPlayer(Vec2 pos)

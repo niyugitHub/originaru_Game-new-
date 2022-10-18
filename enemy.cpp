@@ -57,7 +57,7 @@ void Enemy::update()
 
 	if (m_shotInterval <= 0)
 	{
-		if (randShot > 50)
+		if (randShot > 0)
 		{
 			if (m_pMain->createShotNormal(getPos()))
 			{
@@ -71,13 +71,16 @@ void Enemy::update()
 				m_shotInterval = kShotInterval;
 			}
 		}
-		else
+		/*if(randShot > 0)
 		{
-			if (m_pMain->createShotFall(getPos()))
+			for (int ShotNum = 0; ShotNum < 8; ShotNum++)
 			{
-				m_shotInterval = kShotInterval;
+				if (m_pMain->createShotFall(getPos()))
+				{
+					m_shotInterval = kShotInterval;
+				}
 			}
-		}
+		}*/
 	}
 	
 	if (m_waitFrame > 0)
