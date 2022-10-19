@@ -48,6 +48,7 @@ private:
 	Player m_player;
 	// “G
 	Enemy m_enemy;
+	
 	// ƒVƒ‡ƒbƒg
 	//ShotBase* m_pShot[kShotMax];
 	std::vector<ShotBase*> m_pShotVt;
