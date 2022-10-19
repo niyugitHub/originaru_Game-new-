@@ -9,11 +9,11 @@ namespace
 
 void ShotNormal::start(Vec2 pos)
 {
-//	ShotBase::start(pos);
+	ShotBase::start(pos);
 
-	m_isExist = true;
+	/*m_isExist = true;
 
-	m_PlayerPos = getPos();
+	m_PlayerPos = getPos();*/
 	
 	m_vec.x = kChaseSpeed;
 	m_vec.y = kShotSpeed;
@@ -28,11 +28,11 @@ void ShotNormal::update()
 {
 	if (!m_isExist)return;
 
-	if (m_pos.x > m_PlayerPos.x)
+	/*if (m_pos.x > m_PlayerPos.x)
 		m_pos.x += m_vec.x;
 
 	else if (m_pos.x < m_PlayerPos.x)
-		m_pos.x -= m_vec.x;
+		m_pos.x -= m_vec.x;*/
 
 	m_pos.y += m_vec.y;
 
