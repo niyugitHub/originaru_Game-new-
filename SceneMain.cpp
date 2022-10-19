@@ -7,7 +7,7 @@
 #include <cassert>
 #include "ShotNormal.h"
 #include "game.h"
-//aaaa
+//aaaaa
 namespace
 {
 	//ƒVƒ‡ƒbƒg‚Ì”­ŽËŠÔŠu
