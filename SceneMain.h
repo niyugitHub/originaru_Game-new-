@@ -49,6 +49,7 @@ public:
 	virtual bool Col_ShotPlayer();
 	virtual bool Col_EnemyPlayer();
 	virtual bool Col_ShotEnemy();
+
 private:
 
 	// キャラクターのアニメーション
@@ -65,8 +66,11 @@ private:
 	 int m_hTestSound;
 	 // 敵体力
 	 int m_EnemyHP;
-	 //trueを通った回数
-	 int m_trueCount;
+	 // 敵体力
+	 //プレイヤーが死んだ回数
+	 int m_DeadPlayerCount;
+	 //敵が死んだ回数
+	 int m_DeadEnemyCount;
 	// プレイヤー
 	Player m_player;
 	// 敵

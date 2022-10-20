@@ -76,7 +76,8 @@ void SceneMain::init()
 	m_enemy.init();
 	m_enemy.setMain(this);
 	m_EnemyHP = 20;
-	m_trueCount = 0;
+	m_DeadPlayerCount = 0;
+	m_DeadEnemyCount = 0;
 	m_animeNo = 0;
 	m_animeFrame = 8;
 }
@@ -114,9 +115,9 @@ SceneBase* SceneMain::update()
 	int padState = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	if (Col_ShotPlayer())
 	{
-		if (m_trueCount == 1)
+		if (m_DeadPlayerCount == 1)
 		{
-			WaitVSync(120);
+			WaitVSync(60);
 		}		
 		
 		for (auto& handle : m_hPlayerGraphic)
@@ -133,13 +134,14 @@ SceneBase* SceneMain::update()
 
 		if (m_animeNo < 9)
 		{
-			DrawGraph(static_cast<int>(m_player.getPos().x), static_cast<int>(m_player.getPos().y), m_hDeadGraphic[m_animeNo], true);
+			DrawGraph(static_cast<int>(m_player.getPos().x -20), static_cast<int>(m_player.getPos().y - 20), m_hDeadGraphic[m_animeNo], true);
 		}
 
 		if (padState & PAD_INPUT_2)
 		{
 			// TitleÇ…êÿÇËë÷Ç¶
 			return (new SceneTitle);
+			m_DeadPlayerCount = 0;
 		}
 	}
 	if (Col_EnemyPlayer())
@@ -149,11 +151,12 @@ SceneBase* SceneMain::update()
 	if (Col_ShotEnemy())
 	{
 		m_EnemyHP--;
-		if (m_EnemyHP == 0)
+		if (m_EnemyHP <= 0)
 		{
-			if (m_trueCount == 1)
+			if (m_DeadEnemyCount == 20)
 			{
-				WaitVSync(120);
+				WaitVSync(60);
+				m_DeadEnemyCount++;
 			}
 
 			DeleteGraph(m_hEnemyGraphic);
@@ -183,11 +186,16 @@ SceneBase* SceneMain::update()
 	{
 		PlaySoundMem(m_hTestSound, DX_PLAYTYPE_BACK, true);
 	}
-	if (m_trueCount == 0 && m_EnemyHP >= 0)
+	if (m_DeadEnemyCount > 20)
 	{
+		return this;
+	}
+	if (m_DeadPlayerCount != 0)
+	{
+		return this;
+	}
 		m_player.update();
 		m_enemy.update();
-	}
 
 	std::vector<ShotBase*>::iterator it = m_pShotVt.begin();
 	while (it != m_pShotVt.end())
@@ -327,11 +335,10 @@ bool SceneMain::Col_ShotPlayer()
 			it++;
 			continue;
 		}
-
-		m_trueCount++;
+		m_DeadPlayerCount++;
 		return true;
 	}
-	if (m_trueCount != 0) return true;
+	if (m_DeadPlayerCount != 0) return true;
 	return false;
 	
 }
@@ -400,9 +407,9 @@ bool SceneMain::Col_ShotEnemy()
 			it++;
 			continue;
 		}
-		m_trueCount++;
+		m_DeadEnemyCount++;
 		return true;
 	}
-	if (m_trueCount >= m_EnemyHP) return true;
+	if (m_DeadEnemyCount >= 20) return true;
 	return false;
 }
