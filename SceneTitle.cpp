@@ -18,7 +18,7 @@ void SceneTitle::init()
 SceneBase* SceneTitle::update()
 {
 	int padState = GetJoypadInputState(DX_INPUT_KEY_PAD1);
-	if (padState & PAD_INPUT_4)
+	if (padState & PAD_INPUT_2)
 	{
 		// Mainに切り替え
 		return (new SceneMain);
@@ -31,5 +31,8 @@ SceneBase* SceneTitle::update()
 void SceneTitle::draw()
 {
 	DrawGraph(0, 0, m_handle,true);
-	DrawString(Game::kScreenWidth / 2, Game::kScreenHeight / 2, "タイトル画面", GetColor(0, 0, 0));
+	SetFontSize(50);
+	DrawString(Game::kScreenWidth / 2 - 50 * 4.5, 300, "にんじゃをたおせ！", GetColor(0, 0, 0));
+	SetFontSize(30);
+	DrawString(Game::kScreenWidth / 2 - 30 * 4.5, 300, "", GetColor(0, 0, 0));
 }

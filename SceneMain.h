@@ -61,6 +61,7 @@ private:
 	int m_hDeadGraphic[kDeadGraphicDivNum];
 	int m_hEnemyGraphic;
 	int m_hShotGraphic;
+	int m_handle;
 
 	// サウンドハンドル
 	 int m_hTestSound;
