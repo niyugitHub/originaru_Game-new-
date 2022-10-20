@@ -18,21 +18,26 @@ void SceneTitle::init()
 SceneBase* SceneTitle::update()
 {
 	int padState = GetJoypadInputState(DX_INPUT_KEY_PAD1);
-	if (padState & PAD_INPUT_2)
+	if (padState & PAD_INPUT_1)
 	{
 		// Mainに切り替え
 		return (new SceneMain);
 	}
-	
+	if (padState & PAD_INPUT_2)
+	{
+		// 終了
+		DxLib_End();
+	}
 
 	return this;
 }
 
 void SceneTitle::draw()
 {
-	DrawGraph(0, 0, m_handle,true);
+	DrawGraph(0, 0, m_handle, true);
 	SetFontSize(50);
 	DrawString(Game::kScreenWidth / 2 - 50 * 4.5, 300, "にんじゃをたおせ！", GetColor(0, 0, 0));
-	SetFontSize(30);
-	DrawString(Game::kScreenWidth / 2 - 30 * 4.5, 300, "", GetColor(0, 0, 0));
+	DrawString(Game::kScreenWidth / 2 - 50 * 2, 400, "プレイ:A", GetColor(0, 0, 0));
+	DrawString(Game::kScreenWidth / 2 - 50 * 2, 500, "やめる:B", GetColor(0, 0, 0));
+
 }

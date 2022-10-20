@@ -125,8 +125,8 @@ SceneBase* SceneMain::update()
 		if (m_DeadPlayerCount == 1)
 		{
 			WaitVSync(60);
-		}		
-		
+		}
+
 		for (auto& handle : m_hPlayerGraphic)
 		{
 			DeleteGraph(handle);
@@ -144,21 +144,23 @@ SceneBase* SceneMain::update()
 			if (padState & PAD_INPUT_2)
 			{
 				m_DeadPlayerCount = 0;
+				m_EnemyHP = 0;
 				// Titleに切り替え
 				return (new SceneTitle);
 			}
 			if (padState & PAD_INPUT_1)
 			{
 				m_DeadPlayerCount = 0;
+				m_EnemyHP = 0;
 				// Mainに切り替え
 				return (new SceneMain);
 			}
 		}
 	}
-	if (Col_EnemyPlayer())
+	/*if (Col_EnemyPlayer())
 	{
 		DxLib_End();
-	}
+	}*/
 	if (Col_ShotEnemy())
 	{
 		m_EnemyHP--;
@@ -188,10 +190,22 @@ SceneBase* SceneMain::update()
 				DrawGraph(static_cast<int>(m_enemy.getPos().x), static_cast<int>(m_enemy.getPos().y), m_hDeadGraphic[m_animeNo], true);
 			}*/
 
-			if (padState & PAD_INPUT_2)
+			if (m_animeNo > 9)
 			{
-				// Titleに切り替え
-				return (new SceneTitle);
+				if (padState & PAD_INPUT_2)
+				{
+					m_DeadPlayerCount = 0;
+					m_EnemyHP = 0;
+					// Titleに切り替え
+					return (new SceneTitle);
+				}
+				if (padState & PAD_INPUT_1)
+				{
+					m_DeadPlayerCount = 0;
+					m_EnemyHP = 0;
+					// Mainに切り替え
+					return (new SceneMain);
+				}
 			}
 		}
 
@@ -256,7 +270,7 @@ void SceneMain::draw()
 
 	if (m_animeNo < 9 && m_DeadPlayerCount != 0)
 	{
-		DrawGraph(static_cast<int>(m_player.getPos().x - 20), 
+		DrawGraph(static_cast<int>(m_player.getPos().x - 20),
 			static_cast<int>(m_player.getPos().y - 20), m_hDeadGraphic[m_animeNo], true);
 	}
 
@@ -273,7 +287,15 @@ void SceneMain::draw()
 		DrawGraph(static_cast<int>(m_enemy.getPos().x),
 			static_cast<int>(m_enemy.getPos().y), m_hDeadGraphic[m_animeNo], true);
 	}
-	
+
+	if (m_animeNo > 9 && m_EnemyHP <= 0)
+	{
+		SetFontSize(50);
+		DrawString(Game::kScreenWidth / 2 - 50 * 3, 300, "お前の勝ち！", GetColor(0, 0, 0));
+		DrawString(Game::kScreenWidth / 2 - 50 * 2.5, 400, "B:タイトル", GetColor(0, 0, 0));
+		DrawString(Game::kScreenWidth / 2 - 50 * 2.5, 500, "A:もういちど", GetColor(0, 0, 0));
+	}
+
 	for (auto& pShot : m_pShotVt)
 	{
 		assert(pShot);
@@ -289,7 +311,7 @@ void SceneMain::draw()
 	//現在存在している弾の数を表示
 //	DrawFormatString(0, 0, GetColor(255, 255, 255), "弾の数:%d", m_pShotVt.size());
 	DrawBox(0, 20, m_MaxEnemyHP * (Game::kScreenWidth / m_MaxEnemyHP), 80, GetColor(255, 0, 0), true);
-	DrawBox(0, 20, m_EnemyHP * (Game::kScreenWidth / m_MaxEnemyHP), 80,GetColor(0,255,0),true);
+	DrawBox(0, 20, m_EnemyHP * (Game::kScreenWidth / m_MaxEnemyHP), 80, GetColor(0, 255, 0), true);
 }
 
 bool SceneMain::createShotPlayer(Vec2 pos)
