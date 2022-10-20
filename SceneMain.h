@@ -66,7 +66,8 @@ private:
 	 int m_hTestSound;
 	 // “G‘Ì—Í
 	 int m_EnemyHP;
-	 // “G‘Ì—Í
+	 // “GÅ‘å‘Ì—Í
+	 int m_MaxEnemyHP;
 	 //ƒvƒŒƒCƒ„[‚ª€‚ñ‚¾‰ñ”
 	 int m_DeadPlayerCount;
 	 //“G‚ª€‚ñ‚¾‰ñ”

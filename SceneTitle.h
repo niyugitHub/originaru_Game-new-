@@ -24,6 +24,7 @@ private:
 	// テキスト表示位置変更
 	int m_textPosY;
 	int m_textVecY;
+	int m_handle;
 
 	bool m_isEnd;
 };

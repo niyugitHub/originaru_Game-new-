@@ -75,7 +75,8 @@ void SceneMain::init()
 	m_enemy.setHandle(m_hEnemyGraphic);
 	m_enemy.init();
 	m_enemy.setMain(this);
-	m_EnemyHP = 20;
+	m_MaxEnemyHP = 50;
+	m_EnemyHP = 50;
 	m_DeadPlayerCount = 0;
 	m_DeadEnemyCount = 0;
 	m_animeNo = 0;
@@ -153,7 +154,7 @@ SceneBase* SceneMain::update()
 		m_EnemyHP--;
 		if (m_EnemyHP <= 0)
 		{
-			if (m_DeadEnemyCount == 20)
+			if (m_DeadEnemyCount == m_MaxEnemyHP)
 			{
 				WaitVSync(60);
 				m_DeadEnemyCount++;
@@ -186,7 +187,7 @@ SceneBase* SceneMain::update()
 	{
 		PlaySoundMem(m_hTestSound, DX_PLAYTYPE_BACK, true);
 	}
-	if (m_DeadEnemyCount > 20)
+	if (m_DeadEnemyCount > m_MaxEnemyHP)
 	{
 		return this;
 	}
@@ -251,7 +252,8 @@ void SceneMain::draw()
 	DrawGraph(static_cast<int>(m_player.getPos().x), static_cast<int>(m_player.getPos().y), m_hDeadGraphic[m_animeNo], true);*/
 	//Œ»Ý‘¶Ý‚µ‚Ä‚¢‚é’e‚Ì”‚ð•\Ž¦
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "’e‚Ì”:%d", m_pShotVt.size());
-	DrawBox(0, 0, m_EnemyHP * (Game::kScreenWidth / 20), 100,GetColor(0,255,0),true);
+	DrawBox(0, 20, m_MaxEnemyHP * (Game::kScreenWidth / m_MaxEnemyHP), 80, GetColor(255, 0, 0), true);
+	DrawBox(0, 20, m_EnemyHP * (Game::kScreenWidth / m_MaxEnemyHP), 80,GetColor(0,255,0),true);
 }
 
 bool SceneMain::createShotPlayer(Vec2 pos)
@@ -410,6 +412,6 @@ bool SceneMain::Col_ShotEnemy()
 		m_DeadEnemyCount++;
 		return true;
 	}
-	if (m_DeadEnemyCount >= 20) return true;
+	if (m_DeadEnemyCount >= m_MaxEnemyHP) return true;
 	return false;
 }

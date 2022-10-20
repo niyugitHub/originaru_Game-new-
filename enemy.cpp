@@ -19,7 +19,7 @@ namespace
 
 Enemy::Enemy()
 {
-	m_handle = 1;
+	m_handle = -1;
 	m_pMain = nullptr;
 	m_shotInterval = 0;
 }
@@ -105,14 +105,14 @@ void Enemy::update()
 	{
 		MoveNormal();
 	}
-	else if (m_randMove > 0)
+	else if (m_randMove >= 0)
 	{
 		MoveCircle();
 	}
-	else if (m_randMove > 0)
+	/*else if (m_randMove > 0)
 	{
 
-	}
+	}*/
 
 	if (m_waitFrame == kMoveTime)
 	{
