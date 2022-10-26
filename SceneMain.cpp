@@ -44,6 +44,7 @@ SceneMain::SceneMain()
 	m_hEnemyGraphic = -1;
 	m_hShotGraphic = -1;
 	m_handle = -1;
+	m_PlayerPos = m_player.getPos();
 }
 SceneMain::~SceneMain()
 {
@@ -79,10 +80,12 @@ void SceneMain::init()
 	m_enemy.setMain(this);
 	m_MaxEnemyHP = 50;
 	m_EnemyHP = 50;
-	m_DeadPlayerCount = 0;
-	m_DeadEnemyCount = 0;
+	m_ColPlayerShot = 0;
+	m_ColEnemyShot = 0;
+	m_ColEnemyPlayer = 0;
 	m_animeNo = 0;
 	m_animeFrame = 8;
+	
 }
 
 // 終了処理
@@ -122,7 +125,7 @@ SceneBase* SceneMain::update()
 			kDeadGraphicDivX, kDeadGraphicDivY,
 			kDeadGraphicSizeX, kDeadGraphicSizeY, m_hDeadGraphic);
 
-		if (m_DeadPlayerCount == 1)
+		if (m_ColPlayerShot == 1)
 		{
 			WaitVSync(60);
 		}
@@ -143,24 +146,62 @@ SceneBase* SceneMain::update()
 		{
 			if (padState & PAD_INPUT_2)
 			{
-				m_DeadPlayerCount = 0;
+				m_ColPlayerShot = 0;
 				m_EnemyHP = 0;
 				// Titleに切り替え
 				return (new SceneTitle);
 			}
 			if (padState & PAD_INPUT_1)
 			{
-				m_DeadPlayerCount = 0;
+				m_ColPlayerShot = 0;
 				m_EnemyHP = 0;
 				// Mainに切り替え
 				return (new SceneMain);
 			}
 		}
 	}
-	/*if (Col_EnemyPlayer())
+
+	if (Col_EnemyPlayer())
 	{
-		DxLib_End();
-	}*/
+		LoadDivGraph(kDeadGraphicFilename, kDeadGraphicDivNum,
+			kDeadGraphicDivX, kDeadGraphicDivY,
+			kDeadGraphicSizeX, kDeadGraphicSizeY, m_hDeadGraphic);
+
+		if (m_ColEnemyPlayer == 1)
+		{
+			WaitVSync(60);
+		}
+
+		for (auto& handle : m_hPlayerGraphic)
+		{
+			DeleteGraph(handle);
+		}
+
+		m_animeFrame--;
+		if (m_animeFrame == 0)
+		{
+			m_animeNo++;
+			m_animeFrame = 8;
+		}
+
+		if (m_animeNo > 9)
+		{
+			if (padState & PAD_INPUT_2)
+			{
+				m_ColEnemyPlayer = 0;
+				m_EnemyHP = 0;
+				// Titleに切り替え
+				return (new SceneTitle);
+			}
+			if (padState & PAD_INPUT_1)
+			{
+				m_ColEnemyPlayer = 0;
+				m_EnemyHP = 0;
+				// Mainに切り替え
+				return (new SceneMain);
+			}
+		}
+	}
 	if (Col_ShotEnemy())
 	{
 		m_EnemyHP--;
@@ -170,10 +211,10 @@ SceneBase* SceneMain::update()
 				kDeadGraphicDivX, kDeadGraphicDivY,
 				kDeadGraphicSizeX, kDeadGraphicSizeY, m_hDeadGraphic);
 
-			if (m_DeadEnemyCount == m_MaxEnemyHP)
+			if (m_ColEnemyShot == m_MaxEnemyHP)
 			{
 				WaitVSync(60);
-				m_DeadEnemyCount++;
+				m_ColEnemyShot++;
 			}
 
 			DeleteGraph(m_hEnemyGraphic);
@@ -185,23 +226,18 @@ SceneBase* SceneMain::update()
 				m_animeFrame = 8;
 			}
 
-			/*if (m_animeNo < 9)
-			{
-				DrawGraph(static_cast<int>(m_enemy.getPos().x), static_cast<int>(m_enemy.getPos().y), m_hDeadGraphic[m_animeNo], true);
-			}*/
-
 			if (m_animeNo > 9)
 			{
 				if (padState & PAD_INPUT_2)
 				{
-					m_DeadPlayerCount = 0;
+					m_ColPlayerShot = 0;
 					m_EnemyHP = 0;
 					// Titleに切り替え
 					return (new SceneTitle);
 				}
 				if (padState & PAD_INPUT_1)
 				{
-					m_DeadPlayerCount = 0;
+					m_ColPlayerShot = 0;
 					m_EnemyHP = 0;
 					// Mainに切り替え
 					return (new SceneMain);
@@ -215,16 +251,22 @@ SceneBase* SceneMain::update()
 	{
 		PlaySoundMem(m_hTestSound, DX_PLAYTYPE_BACK, true);
 	}
-	if (m_DeadEnemyCount > m_MaxEnemyHP)
+	if (m_ColEnemyShot > m_MaxEnemyHP)
 	{
 		return this;
 	}
-	if (m_DeadPlayerCount != 0)
+	if (m_ColPlayerShot != 0)
+	{
+		return this;
+	}
+	if (m_ColEnemyPlayer != 0)
 	{
 		return this;
 	}
 		m_player.update();
 		m_enemy.update();
+
+		m_PlayerPos = m_player.getPos();
 
 	std::vector<ShotBase*>::iterator it = m_pShotVt.begin();
 	while (it != m_pShotVt.end())
@@ -268,13 +310,29 @@ void SceneMain::draw()
 	m_player.draw();
 	m_enemy.draw();
 
-	if (m_animeNo < 9 && m_DeadPlayerCount != 0)
+	
+
+	if (m_animeNo < 9 && m_ColPlayerShot != 0)
 	{
 		DrawGraph(static_cast<int>(m_player.getPos().x - 20),
 			static_cast<int>(m_player.getPos().y - 20), m_hDeadGraphic[m_animeNo], true);
 	}
 
-	if (m_animeNo > 9 && m_DeadPlayerCount != 0)
+	if (m_animeNo > 9 && m_ColPlayerShot != 0)
+	{
+		SetFontSize(50);
+		DrawString(Game::kScreenWidth / 2 - 50 * 3, 300, "お前の負け！", GetColor(0, 0, 0));
+		DrawString(Game::kScreenWidth / 2 - 50 * 2.5, 400, "B:タイトル", GetColor(0, 0, 0));
+		DrawString(Game::kScreenWidth / 2 - 50 * 2.5, 500, "A:もういちど", GetColor(0, 0, 0));
+	}
+
+	if (m_animeNo < 9 && m_ColEnemyPlayer != 0)
+	{
+		DrawGraph(static_cast<int>(m_player.getPos().x - 20),
+			static_cast<int>(m_player.getPos().y - 20), m_hDeadGraphic[m_animeNo], true);
+	}
+
+	if (m_animeNo > 9 && m_ColEnemyPlayer != 0)
 	{
 		SetFontSize(50);
 		DrawString(Game::kScreenWidth / 2 - 50 * 3, 300, "お前の負け！", GetColor(0, 0, 0));
@@ -312,6 +370,9 @@ void SceneMain::draw()
 //	DrawFormatString(0, 0, GetColor(255, 255, 255), "弾の数:%d", m_pShotVt.size());
 	DrawBox(0, 20, m_MaxEnemyHP * (Game::kScreenWidth / m_MaxEnemyHP), 80, GetColor(255, 0, 0), true);
 	DrawBox(0, 20, m_EnemyHP * (Game::kScreenWidth / m_MaxEnemyHP), 80, GetColor(0, 255, 0), true);
+
+	DrawFormatString(100, 100, GetColor(0, 0, 0),
+		"%f", m_player.getPos().x);
 }
 
 bool SceneMain::createShotPlayer(Vec2 pos)
@@ -395,10 +456,10 @@ bool SceneMain::Col_ShotPlayer()
 			it++;
 			continue;
 		}
-		m_DeadPlayerCount++;
+		m_ColPlayerShot++;
 		return true;
 	}
-	if (m_DeadPlayerCount != 0) return true;
+	if (m_ColPlayerShot != 0) return true;
 	return false;
 	
 }
@@ -408,6 +469,11 @@ bool SceneMain::Col_EnemyPlayer()
 	m_player.getPos();
 	m_enemy.getPos();
 
+	if (m_ColEnemyPlayer != 0)
+	{
+		m_ColEnemyPlayer++;
+		return true;
+	}
 	float playerLeft = m_player.getPos().x + 10;
 	float playerRight = m_player.getPos().x + kPlayerGraphicSizeX - 10;
 	float playerTop = m_player.getPos().y + 10;
@@ -423,6 +489,7 @@ bool SceneMain::Col_EnemyPlayer()
 	if (playerTop > enemyBottom) return false;
 	if (playerBottom < enemyTop) return false;
 
+	m_ColEnemyPlayer++;
 	return true;
 }
 
@@ -467,9 +534,9 @@ bool SceneMain::Col_ShotEnemy()
 			it++;
 			continue;
 		}
-		m_DeadEnemyCount++;
+		m_ColEnemyShot++;
 		return true;
 	}
-	if (m_DeadEnemyCount >= m_MaxEnemyHP) return true;
+	if (m_ColEnemyShot >= m_MaxEnemyHP) return true;
 	return false;
 }

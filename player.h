@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vec2.h"
+#include "ShotNormal.h"
 
 class SceneMain;
 
@@ -56,4 +57,7 @@ private:
 	int m_animeNo;	// 表示する番号
 	int m_animeFrame;
 	int m_dirNo;
+
+	// プレイヤー
+	ShotNormal m_shotNormal;
 };

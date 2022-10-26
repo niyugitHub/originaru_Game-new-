@@ -37,7 +37,7 @@ public:
 	virtual void draw();
 
 	// 情報の取得
-	Vec2 getPos() const { return m_pos; }
+	Vec2 getPlayerPos() const { return  m_PlayerPos; }
 
 	//弾の生成
 	virtual bool createShotPlayer(Vec2 pos);
@@ -69,16 +69,19 @@ private:
 	 int m_EnemyHP;
 	 // 敵最大体力
 	 int m_MaxEnemyHP;
-	 //プレイヤーが死んだ回数
-	 int m_DeadPlayerCount;
-	 //敵が死んだ回数
-	 int m_DeadEnemyCount;
+	 //プレイヤーと弾が当たった回数
+	 int m_ColPlayerShot;
+	 //敵と弾が当たった回数
+	 int m_ColEnemyShot;
+	 //敵とプレイヤーが当たった回数
+	 int m_ColEnemyPlayer;
+	 //
 	// プレイヤー
 	Player m_player;
 	// 敵
 	Enemy m_enemy;
 	// 表示位置
-	Vec2 m_pos;
+	Vec2 m_PlayerPos;
 	// ショット
 	//ShotBase* m_pShot[kShotMax];
 	std::vector<ShotBase*> m_pShotVt;

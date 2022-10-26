@@ -1,5 +1,7 @@
 #include "ShotNormal.h"
 #include "game.h"
+#include "SceneMain.h"
+#include "Dxlib.h"
 
 namespace
 {
@@ -14,25 +16,24 @@ void ShotNormal::start(Vec2 pos)
 	/*m_isExist = true;
 
 	m_PlayerPos = getPos();*/
-	
+//	m_pMain = nullptr;
 	m_vec.x = kChaseSpeed;
 	m_vec.y = kShotSpeed;
-}
-
-void setPlayerPos()
-{
-	
 }
 
 void ShotNormal::update()
 {
 	if (!m_isExist)return;
 
-	/*if (m_pos.x > m_PlayerPos.x)
+	/*if (m_pos.x < m_pMain->getPlayerPos().x)
+	{
 		m_pos.x += m_vec.x;
+	}
 
-	else if (m_pos.x < m_PlayerPos.x)
-		m_pos.x -= m_vec.x;*/
+	else if (m_pos.x > m_pMain->getPlayerPos().x)
+	{
+		m_pos.x -= m_vec.x;
+	}*/
 
 	m_pos.y += m_vec.y;
 
@@ -40,4 +41,5 @@ void ShotNormal::update()
 	{
 		m_isExist = false;
 	}
+
 }

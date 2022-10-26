@@ -102,6 +102,7 @@ void Player::update()
 		if (m_pos.x > (Game::kScreenWidth)-(kPlayerGraphicSizeX)) m_pos.x = (Game::kScreenWidth)-(kPlayerGraphicSizeX);
 	}
 
+	
 
 	m_animeFrame++;
 	if (m_animeFrame >= kPlayerGraphicDivX * kAnimeChangeFrame)
