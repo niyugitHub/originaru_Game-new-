@@ -25,8 +25,8 @@ namespace
 	constexpr int kEnemyGraphicSizeX = Enemy::kEnemyGraphicSizeX;
 	constexpr int kEnemyGraphicSizeY = Enemy::kEnemyGraphicSizeY;
 	// ショットのサイズ
-	constexpr int kShotGraphicSizeX = 16.0f;
-	constexpr int kShotGraphicSizeY = 16.0f;
+	constexpr float kShotGraphicSizeX = 16.0f;
+	constexpr float kShotGraphicSizeY = 16.0f;
 }
 
 SceneMain::SceneMain()
@@ -40,8 +40,22 @@ SceneMain::SceneMain()
 	{
 		handle = -1;
 	}
-
+	m_MaxEnemyHP = 50;
+	m_EnemyHP = 50;
+	m_ColPlayerShot = 0;
+	m_ColEnemyShot = 0;
+	m_ColEnemyPlayer = 0;
+	m_animeNo = 0;
+	m_animeFrame = 8;
 	m_hEnemyGraphic = -1;
+	/*for (int i = 0; i < Player::kPlayerGraphicDivNum; i++)
+	{
+		m_hPlayerGraphic[i] = -1;
+	}
+	for (int i = 0; i < kDeadGraphicDivNum; i++)
+	{
+		m_hPlayerGraphic[i] = -1;
+	}*/
 	m_hShotGraphic = -1;
 	m_handle = -1;
 	m_PlayerPos = m_player.getPos();
@@ -66,8 +80,6 @@ void SceneMain::init()
 	m_handle = LoadGraph("data/背景.png");
 	m_hEnemyGraphic = LoadGraph(kEnemyGraphicFilename);
 	m_hShotGraphic = LoadGraph("data/shot.bmp");
-	// サウンドのロード
-	m_hTestSound = LoadSoundMem("sound/cursor0.mp3");
 
 	for (int i = 0; i < Player::kPlayerGraphicDivNum; i++)
 	{
@@ -85,7 +97,7 @@ void SceneMain::init()
 	m_ColEnemyPlayer = 0;
 	m_animeNo = 0;
 	m_animeFrame = 8;
-	
+//	m_PlayerPos = m_player.getPos();
 }
 
 // 終了処理
@@ -104,8 +116,7 @@ void SceneMain::end()
 
 	DeleteGraph(m_hEnemyGraphic);
 	DeleteGraph(m_hShotGraphic);
-	// サウンドアンロード
-	DeleteSoundMem(m_hTestSound);
+
 
 	for (auto& pShot : m_pShotVt)
 	{
@@ -247,10 +258,6 @@ SceneBase* SceneMain::update()
 
 	}
 	/*int padState = GetJoypadInputState(DX_INPUT_KEY_PAD1);*/
-	if (padState & PAD_INPUT_1)
-	{
-		PlaySoundMem(m_hTestSound, DX_PLAYTYPE_BACK, true);
-	}
 	if (m_ColEnemyShot > m_MaxEnemyHP)
 	{
 		return this;
@@ -266,7 +273,7 @@ SceneBase* SceneMain::update()
 		m_player.update();
 		m_enemy.update();
 
-		m_PlayerPos = m_player.getPos();
+		//m_PlayerPos = m_player.getPos();
 
 	std::vector<ShotBase*>::iterator it = m_pShotVt.begin();
 	while (it != m_pShotVt.end())
@@ -321,9 +328,9 @@ void SceneMain::draw()
 	if (m_animeNo > 9 && m_ColPlayerShot != 0)
 	{
 		SetFontSize(50);
-		DrawString(Game::kScreenWidth / 2 - 50 * 3, 300, "お前の負け！", GetColor(0, 0, 0));
-		DrawString(Game::kScreenWidth / 2 - 50 * 2.5, 400, "B:タイトル", GetColor(0, 0, 0));
-		DrawString(Game::kScreenWidth / 2 - 50 * 2.5, 500, "A:もういちど", GetColor(0, 0, 0));
+		DrawString(static_cast<int>(Game::kScreenWidth / 2 - 50 * 3), 300, "お前の負け！", GetColor(0, 0, 0));
+		DrawString(static_cast<int>(Game::kScreenWidth / 2 - 50 * 2.5), 400, "B:タイトル", GetColor(0, 0, 0));
+		DrawString(static_cast<int>(Game::kScreenWidth / 2 - 50 * 2.5), 500, "A:もういちど", GetColor(0, 0, 0));
 	}
 
 	if (m_animeNo < 9 && m_ColEnemyPlayer != 0)
@@ -335,9 +342,9 @@ void SceneMain::draw()
 	if (m_animeNo > 9 && m_ColEnemyPlayer != 0)
 	{
 		SetFontSize(50);
-		DrawString(Game::kScreenWidth / 2 - 50 * 3, 300, "お前の負け！", GetColor(0, 0, 0));
-		DrawString(Game::kScreenWidth / 2 - 50 * 2.5, 400, "B:タイトル", GetColor(0, 0, 0));
-		DrawString(Game::kScreenWidth / 2 - 50 * 2.5, 500, "A:もういちど", GetColor(0, 0, 0));
+		DrawString(static_cast<int>(Game::kScreenWidth / 2 - 50 * 3), 300, "お前の負け！", GetColor(0, 0, 0));
+		DrawString(static_cast<int>(Game::kScreenWidth / 2 - 50 * 2.5), 400, "B:タイトル", GetColor(0, 0, 0));
+		DrawString(static_cast<int>(Game::kScreenWidth / 2 - 50 * 2.5), 500, "A:もういちど", GetColor(0, 0, 0));
 	}
 
 	if (m_animeNo < 9 && m_EnemyHP <= 0)
@@ -349,9 +356,9 @@ void SceneMain::draw()
 	if (m_animeNo > 9 && m_EnemyHP <= 0)
 	{
 		SetFontSize(50);
-		DrawString(Game::kScreenWidth / 2 - 50 * 3, 300, "お前の勝ち！", GetColor(0, 0, 0));
-		DrawString(Game::kScreenWidth / 2 - 50 * 2.5, 400, "B:タイトル", GetColor(0, 0, 0));
-		DrawString(Game::kScreenWidth / 2 - 50 * 2.5, 500, "A:もういちど", GetColor(0, 0, 0));
+		DrawString(static_cast<int>(Game::kScreenWidth / 2 - 50 * 3), 300, "お前の勝ち！", GetColor(0, 0, 0));
+		DrawString(static_cast<int>(Game::kScreenWidth / 2 - 50 * 2.5), 400, "B:タイトル", GetColor(0, 0, 0));
+		DrawString(static_cast<int>(Game::kScreenWidth / 2 - 50 * 2.5), 500, "A:もういちど", GetColor(0, 0, 0));
 	}
 
 	for (auto& pShot : m_pShotVt)
@@ -372,7 +379,7 @@ void SceneMain::draw()
 	DrawBox(0, 20, m_EnemyHP * (Game::kScreenWidth / m_MaxEnemyHP), 80, GetColor(0, 255, 0), true);
 
 	DrawFormatString(100, 100, GetColor(0, 0, 0),
-		"%f", m_player.getPos().x);
+		"%f","%f", m_PlayerPos);
 }
 
 bool SceneMain::createShotPlayer(Vec2 pos)

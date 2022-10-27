@@ -63,8 +63,6 @@ private:
 	int m_hShotGraphic;
 	int m_handle;
 
-	// サウンドハンドル
-	 int m_hTestSound;
 	 // 敵体力
 	 int m_EnemyHP;
 	 // 敵最大体力
@@ -78,6 +76,7 @@ private:
 	 //
 	// プレイヤー
 	Player m_player;
+
 	// 敵
 	Enemy m_enemy;
 	// 表示位置

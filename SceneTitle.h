@@ -6,6 +6,7 @@ class SceneTitle : public SceneBase
 public:
 	SceneTitle() 
 	{
+		m_handle = -1;
 		m_textPosY = 0;
 		m_textVecY = 0;
 		m_isEnd = false;

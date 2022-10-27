@@ -9,12 +9,12 @@ class SceneMain;
 class ShotNormal : public ShotBase
 {
 public:
-	ShotNormal()
-	{
-	}
+	ShotNormal();
 	virtual ~ShotNormal()
 	{
 	}
+
+	virtual void init();
 
 	// SceneMain‚ğİ’è
 	void setMain(SceneMain* pMain) { m_pMain = pMain; }
