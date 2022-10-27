@@ -10,7 +10,7 @@ namespace
 }
 
 ShotNormal::ShotNormal() :
-	m_pMain(nullptr)
+	m_PlayerPos(0,0)
 {
 
 }
@@ -27,11 +27,6 @@ void ShotNormal::start(Vec2 pos)
 	m_vec.y = kShotSpeed;
 }
 
-void ShotNormal:: init()
-{
-	m_pMain = new SceneMain;
-}
-
 void ShotNormal::update()
 {
 	if (!m_isExist)
@@ -39,15 +34,15 @@ void ShotNormal::update()
 		delete m_pMain;
 		return;
 	}
-	/*if (m_pos.x < m_pMain->getPlayerPos().x)
+	if (m_pos.x < m_PlayerPos.x)
 	{
 		m_pos.x += m_vec.x;
 	}
 
-	else if (m_pos.x > m_pMain->getPlayerPos().x)
+	else if (m_pos.x > m_PlayerPos.x)
 	{
 		m_pos.x -= m_vec.x;
-	}*/
+	}
 
 	delete m_pMain;
 

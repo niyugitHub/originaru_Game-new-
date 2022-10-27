@@ -48,17 +48,16 @@ SceneMain::SceneMain()
 	m_animeNo = 0;
 	m_animeFrame = 8;
 	m_hEnemyGraphic = -1;
-	/*for (int i = 0; i < Player::kPlayerGraphicDivNum; i++)
+	for (int i = 0; i < Player::kPlayerGraphicDivNum; i++)
 	{
 		m_hPlayerGraphic[i] = -1;
 	}
 	for (int i = 0; i < kDeadGraphicDivNum; i++)
 	{
 		m_hPlayerGraphic[i] = -1;
-	}*/
+	}
 	m_hShotGraphic = -1;
 	m_handle = -1;
-	m_PlayerPos = m_player.getPos();
 }
 SceneMain::~SceneMain()
 {
@@ -97,7 +96,8 @@ void SceneMain::init()
 	m_ColEnemyPlayer = 0;
 	m_animeNo = 0;
 	m_animeFrame = 8;
-//	m_PlayerPos = m_player.getPos();
+	m_shotNormal.setPos(m_player.getPos());
+
 }
 
 // I—¹ˆ—
@@ -270,8 +270,10 @@ SceneBase* SceneMain::update()
 	{
 		return this;
 	}
-		m_player.update();
-		m_enemy.update();
+	m_player.update();
+	m_enemy.update();
+
+	/*m_shotNormal.setPos(m_player.getPos());*/
 
 		//m_PlayerPos = m_player.getPos();
 
@@ -377,9 +379,6 @@ void SceneMain::draw()
 //	DrawFormatString(0, 0, GetColor(255, 255, 255), "’e‚Ì”:%d", m_pShotVt.size());
 	DrawBox(0, 20, m_MaxEnemyHP * (Game::kScreenWidth / m_MaxEnemyHP), 80, GetColor(255, 0, 0), true);
 	DrawBox(0, 20, m_EnemyHP * (Game::kScreenWidth / m_MaxEnemyHP), 80, GetColor(0, 255, 0), true);
-
-	DrawFormatString(100, 100, GetColor(0, 0, 0),
-		"%f","%f", m_PlayerPos);
 }
 
 bool SceneMain::createShotPlayer(Vec2 pos)

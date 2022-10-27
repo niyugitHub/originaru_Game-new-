@@ -10,14 +10,13 @@ class ShotNormal : public ShotBase
 {
 public:
 	ShotNormal();
+
 	virtual ~ShotNormal()
 	{
 	}
 
-	virtual void init();
-
-	// SceneMainを設定
-	void setMain(SceneMain* pMain) { m_pMain = pMain; }
+	
+	virtual void setPos(Vec2 pos) { m_PlayerPos = pos; }
 
 	//ショット開始
 	virtual void start(Vec2 pos);
@@ -27,7 +26,7 @@ public:
 private:
 
 	SceneMain* m_pMain;
-	// プレイヤーの位置を保存するメンバ関数
+	// プレイヤーの位置を保存するメンバ変数
 	Vec2 m_PlayerPos;
 
 	Vec2 m_vec;

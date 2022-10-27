@@ -36,8 +36,8 @@ public:
 	// 毎フレームの描画
 	virtual void draw();
 
-	// 情報の取得
-	Vec2 getPlayerPos() const { return  m_PlayerPos; }
+	//// 情報の取得
+	//Vec2 getPlayerPos() const { return  m_PlayerPos; }
 
 	//弾の生成
 	virtual bool createShotPlayer(Vec2 pos);
@@ -77,10 +77,10 @@ private:
 	// プレイヤー
 	Player m_player;
 
+	ShotNormal m_shotNormal;
+
 	// 敵
 	Enemy m_enemy;
-	// 表示位置
-	Vec2 m_PlayerPos;
 	// ショット
 	//ShotBase* m_pShot[kShotMax];
 	std::vector<ShotBase*> m_pShotVt;
